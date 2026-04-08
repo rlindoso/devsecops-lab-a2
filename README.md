@@ -1,4 +1,5 @@
 # Lab — Pipeline DevSecOps com GitHub Actions
+![DevSecOps Pipeline](https://github.com/rlindoso/devsecops-lab-a2/actions/workflows/devsecops.yml/badge.svg)
 
 ## Aula 2 — Shift-Left na Prática: SAST, SCA e Secrets
 
