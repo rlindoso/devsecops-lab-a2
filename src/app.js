@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 app.use(express.json());
+const pool = require('./db');
 
 // Health check — usado pelo Kubernetes, load balancers, etc.
 app.get('/health', (req, res) => {
@@ -35,6 +36,35 @@ app.post('/api/validate', (req, res) => {
     valid: true,
     email: email.toLowerCase().trim()
   });
+});
+
+// Listar mensagens
+app.get('/api/messages', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM messages ORDER BY created_at DESC LIMIT 20'
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error', detail: err.message });
+  }
+});
+
+// Criar mensagem
+app.post('/api/messages', async (req, res) => {
+  const { text } = req.body;
+  if (!text || text.trim().length === 0) {
+    return res.status(400).json({ error: 'Text is required' });
+  }
+  try {
+    const result = await pool.query(
+      'INSERT INTO messages (text) VALUES ($1) RETURNING *',
+      [text.trim()]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error', detail: err.message });
+  }
 });
 
 module.exports = app;
