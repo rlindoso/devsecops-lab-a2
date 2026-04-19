@@ -1,0 +1,14 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: recommendation-pod-failure
+  namespace: chaos-testing
+spec:
+  selector:
+    namespaces:
+      - default
+    labelSelectors:
+      app: recommendationservice
+  mode: one
+  action: pod-failure
+  duration: '2m'
