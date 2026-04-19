@@ -18,6 +18,8 @@ spec:
       containers:
         - name: postgres
           image: postgres:16-alpine   # Imagem oficial do PostgreSQL
+          securityContext:            # Segurança a nível de Container
+            allowPrivilegeEscalation: false # Não pode escalar privilégios
           ports:
             - containerPort: 5432     # Porta que o PostgreSQL escuta
           env:                        # Variáveis de ambiente diretas
