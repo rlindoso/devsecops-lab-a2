@@ -13,6 +13,10 @@ spec:
       containers:
         - name: init-db
           image: devsecops-app:local  # Mesma imagem da app (tem o script init-db.js)
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
           command: ["node", "src/init-db.js"]  # Sobrescreve o CMD do Dockerfile
           envFrom:                    # Carrega TODAS as variáveis do ConfigMap
             - configMapRef:

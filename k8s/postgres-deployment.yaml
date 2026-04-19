@@ -18,6 +18,8 @@ spec:
       containers:
         - name: postgres
           image: postgres:16-alpine   # Imagem oficial do PostgreSQL
+          securityContext:
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: 5432     # Porta que o PostgreSQL escuta
           env:                        # Variáveis de ambiente diretas
@@ -43,5 +45,5 @@ spec:
           readinessProbe:             # K8s verifica se o pod está pronto
             exec:
               command: ["pg_isready", "-U", "app", "-d", "devsecops"]
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 20
+            periodSeconds: 10
